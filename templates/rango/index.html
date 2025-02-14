@@ -1,15 +1,17 @@
-<!DOCTYPE html>
-{% load staticfiles %} 
-<html>
+{{% extends 'rango/base.html' %}
+{% load static %}
 
-<head>
-    <title>Rango</title>
-</head>
+{% block title %}Homepage{% endblock %}
 
-<body>
+{% block content %}
     <h1>Rango says...</h1>
     <div>
-        hey there partner! <br />
+        {% if user.is_authenticated %}
+            howdy {{ user.username }}!
+        {% else %}
+            hey there partner!
+        {% endif %}
+         <br />
         <strong>{{ boldmessage }}</strong><br />
     </div>
 
@@ -19,7 +21,7 @@
         <ul>
             {% for category in categories %}
             <li>
-                <a href="/rango/category/{{category.slug}}">{{ category.name }}</a>
+                <a href="{% url 'rango:show_category' category.slug %}">{{ category.name }}</a>
             </li>
             {% endfor %}
         </ul>
@@ -33,7 +35,7 @@
         {% if pages %}
         <ul>
             {% for page in pages %}
-            <li><a href = "{{ page.url }}">{{ page.title }}</a> ({{ page.views }} views)</li>
+            <li><a href="{{ page.url }}">{{ page.title }}</a> ({{ page.views }} views)</li>
             {% endfor %}
         </ul>
         {% else %}
@@ -42,9 +44,7 @@
     </div>
 
     <div>
-        <a href="/rango/about/">About</a><br />
         <img src="{% static 'images/tango.jpg' %}" alt="Picture of Rango"/>
     </div>
+{% endblock %}
 
-</body>
-</html>
